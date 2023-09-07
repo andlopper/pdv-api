@@ -28,6 +28,11 @@ public class BffService {
         return restTemplate.getForObject(productApiUrl, Product.class);
     }
 
+    public Product getCustomers(){
+        String customerApiUrl = "localhost:8083";
+        return restTemplate.getForObject(customerApiUrl, Product.class);
+    }
+
     public Pdv getPdvById(Long pdvId) {
         String pdvApiUrl = "http://example.com/pdv-api/pdvs/" + pdvId;
         return restTemplate.getForObject(pdvApiUrl, Pdv.class);

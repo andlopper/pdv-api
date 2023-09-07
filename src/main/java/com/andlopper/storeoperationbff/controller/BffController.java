@@ -1,13 +1,17 @@
 package com.andlopper.storeoperationbff.controller;
 
+import com.andlopper.storeoperationbff.model.Customer;
 import com.andlopper.storeoperationbff.model.Product;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -20,9 +24,32 @@ public class BffController {
         this.restTemplate = restTemplate;
     }
 
+    @GetMapping("/customers")
+    public List<Customer> getAllCustomers() {
+        String apiUrl = "http://localhost:8083/customers";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Customer[] customers = restTemplate.getForObject(apiUrl, Customer[].class);
+
+        return Arrays.asList(customers);
+    }
+
+    @GetMapping("/customers/{id}")
+    public Customer getCustomerById(@PathVariable("id") Long id) {
+        String apiUrl = "http://localhost:8083/customers/" + id;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Customer customer = restTemplate.getForObject(apiUrl, Customer.class);
+
+        return customer;
+    }
+
+
     @GetMapping("/products")
     public ResponseEntity<?> getProducts() {
-        String productApiUrl = "http://localhost:8081/products"; // Substitua pela URL da product-api
+        String productApiUrl = "http://localhost:8081/products";
         ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(productApiUrl, Product[].class);
         Product[] products = responseEntity.getBody();
 
@@ -49,17 +76,5 @@ public class BffController {
     public String getSaleById(@PathVariable Long saleId) {
         String saleApiUrl = "http://localhost:8082/sales/" + saleId;
         return restTemplate.getForObject(saleApiUrl, String.class);
-    }
-
-    @GetMapping("/customers/{customerId}")
-    public String getCustomerById(@PathVariable Long customerId){
-        String customerApiUrl = "http://localhost:8083/customers/" + customerId;
-        return restTemplate.getForObject(customerApiUrl, String.class);
-    }
-
-    @GetMapping("/customers")
-    public String getCustomerData() {
-        String customerApiUrl = "http://customer-api/api/customers"; // Substitua pela URL da customer-api
-        return restTemplate.getForObject(customerApiUrl, String.class);
     }
 }
