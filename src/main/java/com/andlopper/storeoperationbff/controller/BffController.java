@@ -20,28 +20,31 @@ public class BffController {
 
     private final RestTemplate restTemplate;
 
+    private final String customerApiUrl = "https://customer-api-ehtm.onrender.com/customers";
+
+    private final String productsApiUrl = "";
+
+    private final String pdvApiUrl = "";
+
+
     public BffController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     @GetMapping("/customers")
     public List<Customer> getAllCustomers() {
-        String apiUrl = "http://localhost:8083/customers";
-
         RestTemplate restTemplate = new RestTemplate();
 
-        Customer[] customers = restTemplate.getForObject(apiUrl, Customer[].class);
+        Customer[] customers = restTemplate.getForObject(customerApiUrl, Customer[].class);
 
         return Arrays.asList(customers);
     }
 
     @GetMapping("/customers/{id}")
     public Customer getCustomerById(@PathVariable("id") Long id) {
-        String apiUrl = "http://localhost:8083/customers/" + id;
-
         RestTemplate restTemplate = new RestTemplate();
 
-        Customer customer = restTemplate.getForObject(apiUrl, Customer.class);
+        Customer customer = restTemplate.getForObject(customerApiUrl + "/" + id, Customer.class);
 
         return customer;
     }
