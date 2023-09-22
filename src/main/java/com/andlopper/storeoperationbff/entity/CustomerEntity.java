@@ -1,6 +1,6 @@
-package com.andlopper.storeoperationbff.model;
+package com.andlopper.storeoperationbff.entity;
 
-public class Customer {
+public class CustomerEntity {
     private Long id;
 
     private String name;

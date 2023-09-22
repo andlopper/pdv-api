@@ -1,45 +1,38 @@
 package com.andlopper.storeoperationbff.service;
 
-import com.andlopper.storeoperationbff.model.Customer;
-import com.andlopper.storeoperationbff.model.Pdv;
-import com.andlopper.storeoperationbff.model.Product;
+import com.andlopper.storeoperationbff.entity.CustomerEntity;
+import com.andlopper.storeoperationbff.entity.PdvEntity;
+import com.andlopper.storeoperationbff.entity.ProductEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class BffService {
     private final RestTemplate restTemplate;
 
-    @Autowired
+    private final String customerApiUrl = "https://customer-api-ehtm.onrender.com/customers/";
+
+    private final String productsApiUrl = "";
+
+    private final String pdvApiUrl = "";
+
     public BffService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public Product getProductById(Long productId) {
-        String productApiUrl = "localhost:8081" + productId;
-        return restTemplate.getForObject(productApiUrl, Product.class);
+    public List<CustomerEntity> getAllCustomers() {
+        CustomerEntity[] customerEntities = restTemplate.getForObject(customerApiUrl, CustomerEntity[].class);
+
+        return Arrays.asList(customerEntities);
     }
 
-    public Product getProducts(){
-        String productApiUrl = "localhost:8081";
-        return restTemplate.getForObject(productApiUrl, Product.class);
-    }
+    public CustomerEntity getCustomerById(Long id) {
+        CustomerEntity customerEntity = restTemplate.getForObject(customerApiUrl + id, CustomerEntity.class);
 
-    public Product getCustomers(){
-        String customerApiUrl = "localhost:8083";
-        return restTemplate.getForObject(customerApiUrl, Product.class);
-    }
-
-    public Pdv getPdvById(Long pdvId) {
-        String pdvApiUrl = "http://example.com/pdv-api/pdvs/" + pdvId;
-        return restTemplate.getForObject(pdvApiUrl, Pdv.class);
-    }
-
-    public Customer getCustomerById(Long customerId) {
-        String customerApiUrl = "http://example.com/customer-api/customers/" + customerId;
-        return restTemplate.getForObject(customerApiUrl, Customer.class);
+        return customerEntity;
     }
 }

@@ -1,7 +1,8 @@
 package com.andlopper.storeoperationbff.controller;
 
-import com.andlopper.storeoperationbff.model.Customer;
-import com.andlopper.storeoperationbff.model.Product;
+import com.andlopper.storeoperationbff.entity.CustomerEntity;
+import com.andlopper.storeoperationbff.entity.ProductEntity;
+import com.andlopper.storeoperationbff.service.BffService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -20,47 +18,38 @@ public class BffController {
 
     private final RestTemplate restTemplate;
 
-    private final String customerApiUrl = "https://customer-api-ehtm.onrender.com/customers";
+    private final BffService bffService;
 
-    private final String productsApiUrl = "";
-
-    private final String pdvApiUrl = "";
-
-
-    public BffController(RestTemplate restTemplate) {
+    public BffController(RestTemplate restTemplate, BffService bffService) {
         this.restTemplate = restTemplate;
+        this.bffService = bffService;
     }
 
     @GetMapping("/customers")
-    public List<Customer> getAllCustomers() {
-        RestTemplate restTemplate = new RestTemplate();
+    public ResponseEntity<?> getAllCustomers() {
+        List<CustomerEntity> customerEntities = bffService.getAllCustomers();
 
-        Customer[] customers = restTemplate.getForObject(customerApiUrl, Customer[].class);
-
-        return Arrays.asList(customers);
+        return ResponseEntity.ok(customerEntities);
     }
 
     @GetMapping("/customers/{id}")
-    public Customer getCustomerById(@PathVariable("id") Long id) {
-        RestTemplate restTemplate = new RestTemplate();
+    public ResponseEntity getCustomerById(@PathVariable("id") Long id) {
+        CustomerEntity customerEntity = bffService.getCustomerById(id);
 
-        Customer customer = restTemplate.getForObject(customerApiUrl + "/" + id, Customer.class);
-
-        return customer;
+        return ResponseEntity.ok(customerEntity);
     }
-
 
     @GetMapping("/products")
     public ResponseEntity<?> getProducts() {
         String productApiUrl = "http://localhost:8081/products";
-        ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(productApiUrl, Product[].class);
-        Product[] products = responseEntity.getBody();
+        ResponseEntity<ProductEntity[]> responseEntity = restTemplate.getForEntity(productApiUrl, ProductEntity[].class);
+        ProductEntity[] productEntities = responseEntity.getBody();
 
-        if (products == null || products.length == 0) {
+        if (productEntities == null || productEntities.length == 0) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productEntities);
     }
 
     @GetMapping("/products/{productId}")
