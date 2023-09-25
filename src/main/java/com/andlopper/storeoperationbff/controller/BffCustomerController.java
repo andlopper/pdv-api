@@ -10,13 +10,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
-public class CustomerController {
+public class BffCustomerController {
 
     private final RestTemplate restTemplate;
 
     private final BffCustomerService bffCustomerService;
 
-    public CustomerController(RestTemplate restTemplate, BffCustomerService bffCustomerService) {
+    public BffCustomerController(RestTemplate restTemplate, BffCustomerService bffCustomerService) {
         this.restTemplate = restTemplate;
         this.bffCustomerService = bffCustomerService;
     }
@@ -36,4 +36,8 @@ public class CustomerController {
     }
 
     @PostMapping
+    public ResponseEntity saveCustomer(@RequestBody CustomerEntity request) {
+        CustomerEntity customerEntity = bffCustomerService.saveCustomer(request);
+        return ResponseEntity.ok(customerEntity);
+    }
 }
