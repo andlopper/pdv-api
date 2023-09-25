@@ -1,4 +1,4 @@
-package com.andlopper.storeoperationbff.entity;
+package com.andlopper.pdv.api.entity;
 
 public class CustomerEntity {
     private Long id;

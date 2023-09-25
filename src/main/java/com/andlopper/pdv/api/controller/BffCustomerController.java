@@ -1,7 +1,7 @@
-package com.andlopper.storeoperationbff.controller;
+package com.andlopper.pdv.api.controller;
 
-import com.andlopper.storeoperationbff.entity.CustomerEntity;
-import com.andlopper.storeoperationbff.service.BffCustomerService;
+import com.andlopper.pdv.api.entity.CustomerEntity;
+import com.andlopper.pdv.api.service.BffCustomerService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;

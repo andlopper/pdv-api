@@ -1,7 +1,6 @@
-package com.andlopper.storeoperationbff.service;
+package com.andlopper.pdv.api.service;
 
-import com.andlopper.storeoperationbff.entity.CustomerEntity;
-import org.springframework.http.ResponseEntity;
+import com.andlopper.pdv.api.entity.CustomerEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

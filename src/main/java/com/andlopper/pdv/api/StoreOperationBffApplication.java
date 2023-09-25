@@ -1,4 +1,4 @@
-package com.andlopper.storeoperationbff;
+package com.andlopper.pdv.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
